@@ -1,6 +1,5 @@
 package com.tradair.mock.services;
 
-import com.tradair.mock.executor.QuoteUpdaterService;
 import com.tradair.mock.fix.QuoteBuilder;
 import com.tradair.mock.model.sender.Sender;
 import com.tradair.mock.model.streaming.StreamingCtx;

@@ -1,4 +1,4 @@
-package com.tradair.mock.executor;
+package com.tradair.mock.services;
 
 import com.tradair.mock.model.streaming.UpdaterThread;
 import com.tradair.mock.pricing.IQuoteManager;
