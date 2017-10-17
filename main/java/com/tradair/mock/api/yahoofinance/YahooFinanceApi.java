@@ -38,15 +38,15 @@ public class YahooFinanceApi {
         YahooQueryResponse yahooResponse = JsonUtil.fromJson(response, YahooQueryResponse.class);
         Quote quote = null;
         if (yahooResponse != null) {
-            quote = toQuote(yahooResponse);
+            quote = toQuote(yahooResponse, symbol);
         }
         return quote;
     }
 
-    private Quote toQuote(YahooQueryResponse response) {
+    private Quote toQuote(YahooQueryResponse response, String symbol) {
         List<YahooQueryResponseRate> rate = response.getQuery().getResults().getRate();
         YahooQueryResponseRate res = rate.get(0);
-        return new Quote(res.getId(), "EUR/USD", 1000000, res.getAsk(), res.getBid());
+        return new Quote(res.getId(), symbol, 1000000, res.getAsk(), res.getBid());
     }
 
     private String buildEncodedQueryString(Set<String> ccPairSet) {

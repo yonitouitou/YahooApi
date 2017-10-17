@@ -64,7 +64,7 @@ public class StreamingService implements IStreamingService {
         } else {
             AtomicInteger counter = subscriptionsCounterMapBySymbol.computeIfAbsent(subscription.getSymbol(), l -> new AtomicInteger(0));
             counter.incrementAndGet();
-            quoteUpdaterService.updatePrice(subscription.getSymbol());
+            quoteUpdaterService.startSymbolUpdater(subscription.getSymbol());
             StreamingThread streamingThread = applicationContext.getBean(StreamingThread.class);
             streamingThread.setCtx(streamingCtx);
             ScheduledFuture<?> scheduledFuture = executor.scheduleAtFixedRate(streamingThread, 0, 1000 / subscription.getRythme(), TimeUnit.MILLISECONDS);
@@ -91,7 +91,7 @@ public class StreamingService implements IStreamingService {
             AtomicInteger counter = subscriptionsCounterMapBySymbol.get(subscription.getSymbol());
             counter.decrementAndGet();
             if (counter.get() == 0) {
-                quoteUpdaterService.stopUpdaterThread(subscription.getSymbol());
+                quoteUpdaterService.stopSymbolUpdater(subscription.getSymbol());
             }
         }
     }

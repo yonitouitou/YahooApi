@@ -75,8 +75,7 @@ public class FixService implements IFixService {
 
     private Subscription toStreamingSubscription(Message message) throws FieldNotFound {
         String mdReqId = message.getString(MDReqID.FIELD);
-        Group noRelatedSymGrp = message.getGroup(NoRelatedSym.FIELD, 0);
-        String symbol = noRelatedSymGrp.getString(Symbol.FIELD).replaceAll("/", "");
+        String symbol = message.getString(Symbol.FIELD);
         int marketDepth = message.isSetField(MarketDepth.FIELD) ? message.getInt(MarketDepth.FIELD) : 5;
         if (marketDepth == 0) {
             marketDepth = 5;
