@@ -16,7 +16,9 @@ public class StreamingThread implements Runnable {
     @Override
     public void run() {
         Message message = quoteBuilder.createMarket(ctx.getSubscription());
-        ctx.getSender().send(message);
+        if (message != null) {
+            ctx.getSender().send(message);
+        }
     }
 
     public void setCtx(StreamingCtx ctx) {

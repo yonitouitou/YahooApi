@@ -29,9 +29,13 @@ public class QuoteBuilder {
 
     public Message createMarket(Subscription subscription) {
         Quote quote = quoteManager.getQuote(subscription.getSymbol());
-        return subscription.getType() == Subscription.Type.STREAMING
-                ? toMarketFixMessage((StreamingSubscription) subscription, quote)
-                : toRfsQuoteFixMessage((RfsSubscription) subscription, quote);
+        Message message = null;
+        if (quote != null) {
+            message = subscription.getType() == Subscription.Type.STREAMING
+                    ? toMarketFixMessage((StreamingSubscription) subscription, quote)
+                    : toRfsQuoteFixMessage((RfsSubscription) subscription, quote);
+        }
+        return message;
     }
 
     public void clearMarketMetaData(String mdReqId) {
@@ -41,7 +45,7 @@ public class QuoteBuilder {
     private Message toMarketFixMessage(StreamingSubscription subscription, Quote quote) {
         MarketDataSnapshotFullRefresh market = new MarketDataSnapshotFullRefresh();
         market.setField(new MDReqID(subscription.getRequestId()));
-        market.setField(new Symbol(quote.getSymbol()));
+        market.setField(new Symbol(quote.getSymbol().replaceAll(" ", "")));
         setNoMdEntries(market, quote, subscription);
         market.setField(new TransactTime(Calendar.getInstance().getTime()));
         return market;
